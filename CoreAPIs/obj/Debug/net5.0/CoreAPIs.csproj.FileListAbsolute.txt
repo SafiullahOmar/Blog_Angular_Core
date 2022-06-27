@@ -1,4 +1,3 @@
-D:\MyData\sample projects\Angular Projects\Random Angualr Projects\Complete_Web_Blog_Angular_Core\CoreAPIs\obj\Debug\net5.0\CoreAPIs.csprojAssemblyReference.cache
 D:\MyData\sample projects\Angular Projects\Random Angualr Projects\Complete_Web_Blog_Angular_Core\CoreAPIs\obj\Debug\net5.0\CoreAPIs.GeneratedMSBuildEditorConfig.editorconfig
 D:\MyData\sample projects\Angular Projects\Random Angualr Projects\Complete_Web_Blog_Angular_Core\CoreAPIs\obj\Debug\net5.0\CoreAPIs.AssemblyInfoInputs.cache
 D:\MyData\sample projects\Angular Projects\Random Angualr Projects\Complete_Web_Blog_Angular_Core\CoreAPIs\obj\Debug\net5.0\CoreAPIs.AssemblyInfo.cs
@@ -34,7 +33,6 @@ D:\MyData\sample projects\Angular Projects\Random Angualr Projects\Complete_Web_
 D:\MyData\sample projects\Angular Projects\Random Angualr Projects\Complete_Web_Blog_Angular_Core\CoreAPIs\bin\Debug\net5.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 D:\MyData\sample projects\Angular Projects\Random Angualr Projects\Complete_Web_Blog_Angular_Core\CoreAPIs\bin\Debug\net5.0\Microsoft.IdentityModel.Tokens.dll
 D:\MyData\sample projects\Angular Projects\Random Angualr Projects\Complete_Web_Blog_Angular_Core\CoreAPIs\bin\Debug\net5.0\Microsoft.OpenApi.dll
-D:\MyData\sample projects\Angular Projects\Random Angualr Projects\Complete_Web_Blog_Angular_Core\CoreAPIs\bin\Debug\net5.0\Newtonsoft.Json.dll
 D:\MyData\sample projects\Angular Projects\Random Angualr Projects\Complete_Web_Blog_Angular_Core\CoreAPIs\bin\Debug\net5.0\Swashbuckle.AspNetCore.Swagger.dll
 D:\MyData\sample projects\Angular Projects\Random Angualr Projects\Complete_Web_Blog_Angular_Core\CoreAPIs\bin\Debug\net5.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 D:\MyData\sample projects\Angular Projects\Random Angualr Projects\Complete_Web_Blog_Angular_Core\CoreAPIs\bin\Debug\net5.0\Swashbuckle.AspNetCore.SwaggerUI.dll
@@ -64,3 +62,5 @@ D:\MyData\sample projects\Angular Projects\Random Angualr Projects\Complete_Web_
 D:\MyData\sample projects\Angular Projects\Random Angualr Projects\Complete_Web_Blog_Angular_Core\CoreAPIs\obj\Debug\net5.0\ref\CoreAPIs.dll
 D:\MyData\sample projects\Angular Projects\Random Angualr Projects\Complete_Web_Blog_Angular_Core\CoreAPIs\obj\Debug\net5.0\CoreAPIs.pdb
 D:\MyData\sample projects\Angular Projects\Random Angualr Projects\Complete_Web_Blog_Angular_Core\CoreAPIs\obj\Debug\net5.0\CoreAPIs.genruntimeconfig.cache
+D:\MyData\sample projects\Angular Projects\Random Angualr Projects\Complete_Web_Blog_Angular_Core\CoreAPIs\bin\Debug\net5.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\MyData\sample projects\Angular Projects\Random Angualr Projects\Complete_Web_Blog_Angular_Core\CoreAPIs\obj\Debug\net5.0\CoreAPIs.csprojAssemblyReference.cache

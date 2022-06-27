@@ -18,6 +18,7 @@ namespace CoreAPIs.Models
         public string UserName { get; set; }
         public DateTime DateCreated { get; set; }
         public string Email { get; set; }
+        public string Token { get; set; }
 
     }
 }

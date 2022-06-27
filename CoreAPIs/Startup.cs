@@ -1,5 +1,7 @@
 using CoreAPIs.Data;
 using CoreAPIs.Data.Entities;
+using CoreAPIs.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -10,10 +12,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace CoreAPIs
@@ -30,7 +34,7 @@ namespace CoreAPIs
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.Configure<JWTConfig>(Configuration.GetSection("JWTConfig"));
             services.AddControllers();
             services.AddDbContext<AppDBContext>(op => {
                 op.UseSqlServer(Configuration.GetConnectionString("Conn"));
@@ -42,7 +46,28 @@ namespace CoreAPIs
                 opt.Password.RequireNonAlphanumeric = false;
                 opt.Password.RequireUppercase = false;
            
-            }).AddEntityFrameworkStores<AppDBContext>(); 
+            }).AddEntityFrameworkStores<AppDBContext>();
+
+            var key = Encoding.ASCII.GetBytes(Configuration["JWTConfig:key"]);
+            var Issuer = Configuration["JWTConfig:Issuer"];
+            var Auiendence = Configuration["JWTConfig:Auiedence"];
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt => {
+                opt.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    RequireExpirationTime = true,
+                    ValidIssuer=Issuer,
+                    ValidAudience=Auiendence
+
+                };
+
+
+
+            });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "CoreAPIs", Version = "v1" });
@@ -62,6 +87,8 @@ namespace CoreAPIs
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
