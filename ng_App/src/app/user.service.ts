@@ -1,6 +1,9 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-
+import { ResponseModel } from './Models/ResponseModel';
+import{ map} from 'rxjs/operators';
+import { ResponseCode } from './Models/responseCode';
+import { User } from './Models/user';
 @Injectable({
   providedIn: 'root'
 })
@@ -15,7 +18,7 @@ export class UserService {
       password:password
     }
 
-    return this.http.post(this.baseURL+"user/Login",body);
+    return this.http.post<ResponseModel>(this.baseURL+"user/Login",body);
   }
 
   public register(email:string,password:string,fullName:string){
@@ -25,13 +28,26 @@ export class UserService {
       FullName:fullName
     }
 
-    return this.http.post(this.baseURL+"user/RegisterUser",body);
+    return this.http.post<ResponseModel>(this.baseURL+"user/RegisterUser",body);
   }
 
   public getAlluser(){
     const header=new HttpHeaders({
       'Authorization':`Bearer ${localStorage.getItem("data")}`
     });
-    return this.http.get(this.baseURL+"user/GetAllUsers",{headers:header});
+    return this.http.get<ResponseModel>(this.baseURL+"user/GetAllUsers",{headers:header}).pipe(map(res=>{
+      let userList=new Array<User>();
+      if(res.ReponseCode==ResponseCode.OK){
+       
+        if(res.Dataset){
+          res.Dataset.map((x:User)=>{
+            userList.push(new User(x.email,x.fullName,x.userName));
+          });
+        }
+
+       
+      }
+      return userList;
+    }));
   }
 }

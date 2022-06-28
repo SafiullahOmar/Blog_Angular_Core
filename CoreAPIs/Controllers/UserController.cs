@@ -43,10 +43,10 @@ namespace CoreAPIs.Controllers
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    return await Task.FromResult("User Has Been Created");
+                    return await Task.FromResult(new ResponseVM(ResponseCode.OK, "User Has Been Created",null));
                 }
 
-                return await Task.FromResult(string.Join(",", result.Errors.Select(x => x.Description).ToArray()));
+                return await Task.FromResult(new ResponseVM(ResponseCode.Error,"", string.Join(",", result.Errors.Select(x => x.Description).ToArray())));
             }
             catch (Exception ex) {
                 return await Task.FromResult(ex.Message);
@@ -63,12 +63,12 @@ namespace CoreAPIs.Controllers
             try
             {
                 var users =  _userManager.Users.Select(x=>new UserVM(x.FullName,x.UserName,x.DateCreated,x.Email))    ;
-                return await Task.FromResult(users);
+                return await Task.FromResult(new ResponseVM(ResponseCode.OK,"", users));
 
             }
             catch (Exception ex)
             {
-                return await Task.FromResult(ex.Message);
+                return await Task.FromResult(new ResponseVM(ResponseCode.Error, ex.Message,""));
             }
         }
 
@@ -85,14 +85,14 @@ namespace CoreAPIs.Controllers
                     var Appusr =await _userManager.FindByEmailAsync(model.Email);
                     var usr = new UserVM(Appusr.FullName, Appusr.UserName, Appusr.DateCreated, Appusr.Email);
                     usr.Token = GenerateToken(Appusr);
-                    return await Task.FromResult(usr);
+                    return await Task.FromResult(new ResponseVM(ResponseCode.OK ,"",usr));
                 }
 
-                return await Task.FromResult("Invalid Login or UserName");
+                return await Task.FromResult(new ResponseVM(ResponseCode.Error,"Invalid Login or UserName",""));
             }
             catch (Exception ex)
             {
-                return await Task.FromResult(ex.Message);
+                  return await Task.FromResult(new ResponseVM(ResponseCode.Error, ex.Message,""));
             }
         }
 

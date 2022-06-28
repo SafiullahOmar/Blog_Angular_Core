@@ -9,7 +9,7 @@ import { UserService } from '../user.service';
 })
 export class UsrMgtComponent implements OnInit {
 
-  public users=[];
+  public users:any=[];
   constructor(private ser:UserService) { }
 
   ngOnInit(): void {
