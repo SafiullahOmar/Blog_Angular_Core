@@ -48,6 +48,8 @@ namespace CoreAPIs
            
             }).AddEntityFrameworkStores<AppDBContext>();
 
+            services.AddCors();
+
             var key = Encoding.ASCII.GetBytes(Configuration["JWTConfig:key"]);
             var Issuer = Configuration["JWTConfig:Issuer"];
             var Auiendence = Configuration["JWTConfig:Auiedence"];
@@ -83,7 +85,9 @@ namespace CoreAPIs
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "CoreAPIs v1"));
             }
-
+            app.UseCors(builder =>
+             builder.WithOrigins(Configuration["AppSetting:Client_URL"].ToString())
+            .AllowAnyHeader().AllowAnyMethod());
             app.UseHttpsRedirection();
 
             app.UseRouting();
