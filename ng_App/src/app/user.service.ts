@@ -32,8 +32,9 @@ export class UserService {
   }
 
   public getAlluser(){
+    let userinfo=JSON.parse(localStorage.getItem("userInfo")!);
     const header=new HttpHeaders({
-      'Authorization':`Bearer ${localStorage.getItem("data")}`
+      'Authorization':`Bearer ${userinfo?.token}`
     });
     return this.http.get<ResponseModel>(this.baseURL+"user/GetAllUsers",{headers:header}).pipe(map(res=>{
       let userList=new Array<User>();
