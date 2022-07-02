@@ -16,6 +16,9 @@
           <a class="nav-link" *ngIf="isUserLogin" routerLink="/mgt">User Managment</a>
         </li>
         <li class="nav-item">
+          <a class="nav-link" *ngIf="isUserLogin" routerLink="/addrole">Create Role</a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link"  *ngIf="isUserLogin"  (click)="onLogOut()" >Log OUt</a>
         </li>
       </ul>

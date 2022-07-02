@@ -46,7 +46,7 @@ namespace CoreAPIs.Controllers
                     return await Task.FromResult(new ResponseVM(ResponseCode.Error, "Role does not Exist", null));
                 }
 
-                var user = new AppUser() { FullName = model.FullName,UserName=model.Email, Email = model.Email, DateCreated = DateTime.UtcNow, DateModified = DateTime.UtcNow };
+                var user = new AppUser() {  FullName = model.FullName,UserName=model.Email, Email = model.Email, DateCreated = DateTime.UtcNow, DateModified = DateTime.UtcNow };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -61,6 +61,10 @@ namespace CoreAPIs.Controllers
                 return await Task.FromResult(ex.Message);
             }
         }
+
+
+ 
+
 
         [Authorize(AuthenticationSchemes =JwtBearerDefaults.AuthenticationScheme)]
         [HttpGet]
@@ -87,8 +91,6 @@ namespace CoreAPIs.Controllers
                 return await Task.FromResult(new ResponseVM(ResponseCode.Error, ex.Message,""));
             }
         }
-
-
        
         [HttpGet]
         [Route("getRoles")]
@@ -107,8 +109,6 @@ namespace CoreAPIs.Controllers
             }
         }
 
-
-
         [HttpPost]
         [Route("Login")]
         public async Task<object> Login(LoginVM model)
@@ -120,7 +120,8 @@ namespace CoreAPIs.Controllers
                 if (result.Succeeded)
                 {
                     var Appusr =await _userManager.FindByEmailAsync(model.Email);
-                    var role = (await _userManager.GetRolesAsync(Appusr)).FirstOrDefault();
+                    var role = "user";
+                   // var role = (await _userManager.GetRolesAsync(Appusr)).FirstOrDefault();
                     var usr = new UserVM(Appusr.FullName, Appusr.UserName, Appusr.DateCreated, Appusr.Email,role);
                     usr.Token = GenerateToken(Appusr,role);
                     return await Task.FromResult(new ResponseVM(ResponseCode.OK ,"",usr));
@@ -169,10 +170,7 @@ namespace CoreAPIs.Controllers
                 }
                 if (await _roleInManger.RoleExistsAsync(model.RoleName)) {
                     return await Task.FromResult(new ResponseVM(ResponseCode.Error, "Role exists", ""));
-                }
-                {
-                    return await Task.FromResult(new ResponseVM(ResponseCode.Error, "Paramters are missing", ""));
-                }
+                }                
 
                 var result=await _roleInManger.CreateAsync(new IdentityRole(model.RoleName));
                 if (result.Succeeded) {

@@ -1,0 +1,27 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+
+            <form [formGroup]="addRoleForm" (ngSubmit)="onSubmit()">
+
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="mb-4 row">
+                            <label for="inputRoleName" class="col-sm-3 col-form-label">Role Name</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" formControlName="roleName" id="inputRoleName">
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" [disabled]="!addRoleForm.valid" type="submit">Submit</button>
+            </form>
+
+        </div>
+    </div>
+</div>

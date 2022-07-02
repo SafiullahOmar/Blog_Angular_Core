@@ -10,6 +10,7 @@ import { RegisterComponent } from './register/register.component';
 import { UserService } from './user.service';
 import { UsrMgtComponent } from './usr-mgt/usr-mgt.component';
 import { HomeComponent } from './home/home.component';
+import { AddRoleComponent } from './add-role/add-role.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { HomeComponent } from './home/home.component';
     LoginComponent,
     RegisterComponent,
     UsrMgtComponent,
-    HomeComponent
+    HomeComponent,
+    AddRoleComponent
   ],
   imports: [
     BrowserModule,
