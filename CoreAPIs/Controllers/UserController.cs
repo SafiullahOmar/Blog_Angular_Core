@@ -23,14 +23,17 @@ namespace CoreAPIs.Controllers
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManger;
+        private readonly RoleManager<IdentityRole> _roleInManger;
 
         private readonly JWTConfig _jwtConfig;
 
-        public UserController( UserManager<AppUser> UserManager, SignInManager<AppUser> SignInManger,IOptions<JWTConfig> jwtConfig)
+        public UserController( UserManager<AppUser> UserManager, SignInManager<AppUser> SignInManger,IOptions<JWTConfig> jwtConfig, RoleManager<IdentityRole> RoleInMang)
         {
             _userManager = UserManager;
             _signInManger = SignInManger;
+            _roleInManger = RoleInMang;
             _jwtConfig = jwtConfig.Value;
+
         }
 
         [HttpPost]
@@ -39,10 +42,16 @@ namespace CoreAPIs.Controllers
 
             try
             {
+                if (! await _roleInManger.RoleExistsAsync(model.Role)) {
+                    return await Task.FromResult(new ResponseVM(ResponseCode.Error, "Role does not Exist", null));
+                }
+
                 var user = new AppUser() { FullName = model.FullName,UserName=model.Email, Email = model.Email, DateCreated = DateTime.UtcNow, DateModified = DateTime.UtcNow };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    var tempUser = await _userManager.FindByEmailAsync(model.Email);
+                    await _userManager.AddToRoleAsync(tempUser, model.Role);
                     return await Task.FromResult(new ResponseVM(ResponseCode.OK, "User Has Been Created",null));
                 }
 
@@ -62,7 +71,14 @@ namespace CoreAPIs.Controllers
 
             try
             {
-                var users =  _userManager.Users.Select(x=>new UserVM(x.FullName,x.UserName,x.DateCreated,x.Email))    ;
+                //var users =  _userManager.Users.Select(x=>new UserVM(x.FullName,x.UserName,x.DateCreated,x.Email))    ;
+                List<UserVM> allUsers = new List<UserVM>(); 
+                var users = _userManager.Users.ToList();
+                foreach (var user in users) {
+                    var role = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
+                    allUsers.Add(new UserVM(user.FullName, user.UserName, user.DateCreated, user.Email, role));
+                }
+               
                 return await Task.FromResult(new ResponseVM(ResponseCode.OK,"", users));
 
             }
@@ -71,6 +87,27 @@ namespace CoreAPIs.Controllers
                 return await Task.FromResult(new ResponseVM(ResponseCode.Error, ex.Message,""));
             }
         }
+
+
+       
+        [HttpGet]
+        [Route("getRoles")]
+        public async Task<object> getRoles()
+        {
+
+            try
+            {
+                var roles = _roleInManger.Roles.Select(x => x.Name).ToList();
+                return await Task.FromResult(new ResponseVM(ResponseCode.OK, "",roles));
+
+            }
+            catch (Exception ex)
+            {
+                return await Task.FromResult(new ResponseVM(ResponseCode.Error, ex.Message, ""));
+            }
+        }
+
+
 
         [HttpPost]
         [Route("Login")]
@@ -83,8 +120,9 @@ namespace CoreAPIs.Controllers
                 if (result.Succeeded)
                 {
                     var Appusr =await _userManager.FindByEmailAsync(model.Email);
-                    var usr = new UserVM(Appusr.FullName, Appusr.UserName, Appusr.DateCreated, Appusr.Email);
-                    usr.Token = GenerateToken(Appusr);
+                    var role = (await _userManager.GetRolesAsync(Appusr)).FirstOrDefault();
+                    var usr = new UserVM(Appusr.FullName, Appusr.UserName, Appusr.DateCreated, Appusr.Email,role);
+                    usr.Token = GenerateToken(Appusr,role);
                     return await Task.FromResult(new ResponseVM(ResponseCode.OK ,"",usr));
                 }
 
@@ -96,7 +134,7 @@ namespace CoreAPIs.Controllers
             }
         }
 
-        public string GenerateToken(AppUser user) {
+        public string GenerateToken(AppUser user,string role) {
             var jwtTokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_jwtConfig.key);
             var Auiendence =_jwtConfig.Auiedence;
@@ -106,7 +144,8 @@ namespace CoreAPIs.Controllers
                 Subject = new System.Security.Claims.ClaimsIdentity(new[] {
                     new Claim(JwtRegisteredClaimNames.NameId, user.Id),
                     new Claim(JwtRegisteredClaimNames.Email, user.Email),
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                    new Claim(ClaimTypes.Role, role)
 
                 }),
 
@@ -122,7 +161,33 @@ namespace CoreAPIs.Controllers
             return jwtTokenHandler.WriteToken(tokens); 
         }
 
+        [HttpPost("AddRole")]
+        public async Task<object> AddRole(Role model) {
+            try {
+                if (model.RoleName == "" || model == null) {
+                    return await Task.FromResult(new ResponseVM(ResponseCode.Error, "Paramters are missing", ""));
+                }
+                if (await _roleInManger.RoleExistsAsync(model.RoleName)) {
+                    return await Task.FromResult(new ResponseVM(ResponseCode.Error, "Role exists", ""));
+                }
+                {
+                    return await Task.FromResult(new ResponseVM(ResponseCode.Error, "Paramters are missing", ""));
+                }
 
+                var result=await _roleInManger.CreateAsync(new IdentityRole(model.RoleName));
+                if (result.Succeeded) {
+                    return await Task.FromResult(new ResponseVM(ResponseCode.OK, "Role Added",null));
+                }
+
+                return await Task.FromResult(new ResponseVM(ResponseCode.Error, "Something Went Wrong", ""));
+
+            }
+            catch (Exception ex)
+            {
+                return await Task.FromResult(new ResponseVM(ResponseCode.Error, ex.Message, ""));
+            }
+
+        }
 
     }
 }

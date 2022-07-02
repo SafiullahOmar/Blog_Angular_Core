@@ -54,7 +54,13 @@ namespace CoreAPIs
             var Issuer = Configuration["JWTConfig:Issuer"];
             var Auiendence = Configuration["JWTConfig:Auiedence"];
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt => {
+            //services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).
+            services.AddAuthentication(x => {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                }
+            ).
+                AddJwtBearer(opt => {
                 opt.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
                 {
                     ValidateIssuerSigningKey = true,
