@@ -1,7 +1,7 @@
 
 import {ResponseCode} from './responseCode';
 export class ResponseModel{
-public ReponseCode:ResponseCode=ResponseCode.NotSet;
-    public ResponseMessage:string="";
-    public Dataset:any;
+public responseCode:ResponseCode=ResponseCode.NotSet;
+    public responseMessage:string="";
+    public dataset:any;
 }

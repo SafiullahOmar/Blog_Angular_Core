@@ -7,16 +7,16 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Home</a>
+          <a class="nav-link active" *ngIf="!isUserLogin" aria-current="page" href="#">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#" routerLink="/login">Login</a>
+          <a class="nav-link" href="#" *ngIf="!isUserLogin" routerLink="/login">Login</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/mgt">User Managment</a>
+          <a class="nav-link" *ngIf="isUserLogin" routerLink="/mgt">User Managment</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/login" (click)="onLogOut" >Log OUt</a>
+          <a class="nav-link"  *ngIf="isUserLogin"  (click)="onLogOut()" >Log OUt</a>
         </li>
       </ul>
     </div>

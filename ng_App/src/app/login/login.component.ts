@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Constants } from '../Models/constants';
 import { UserService } from '../user.service';
 
 @Component({
@@ -28,10 +29,11 @@ export class LoginComponent implements OnInit {
 
     this.ser.login(email, password)
       .subscribe((data:any) => {
+        console.log('beofre storage');
+        if(data.responseCode==1){
+          console.log(data.dataset);
+          localStorage.setItem(Constants.USER_KEY,JSON.stringify(data.dataset));
 
-        if(data.ReponseCode==1){
-          console.log(data);
-          localStorage.setItem("userInfo",JSON.stringify(data.Dataset));
           this.router.navigate(["/mgt"]);
         }
        

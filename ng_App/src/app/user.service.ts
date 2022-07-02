@@ -4,6 +4,7 @@ import { ResponseModel } from './Models/ResponseModel';
 import{ map} from 'rxjs/operators';
 import { ResponseCode } from './Models/responseCode';
 import { User } from './Models/user';
+import { Constants } from './Models/constants';
 @Injectable({
   providedIn: 'root'
 })
@@ -32,16 +33,19 @@ export class UserService {
   }
 
   public getAlluser(){
-    let userinfo=JSON.parse(localStorage.getItem("userInfo")!);
+    console.log(localStorage.getItem(Constants.USER_KEY));
+    let userinfo=JSON.parse(localStorage.getItem(Constants.USER_KEY)!);
+    
     const header=new HttpHeaders({
       'Authorization':`Bearer ${userinfo?.token}`
     });
     return this.http.get<ResponseModel>(this.baseURL+"user/GetAllUsers",{headers:header}).pipe(map(res=>{
       let userList=new Array<User>();
-      if(res.ReponseCode==ResponseCode.OK){
+      if(res.responseCode==ResponseCode.OK){
        
-        if(res.Dataset){
-          res.Dataset.map((x:User)=>{
+        if(res.dataset){
+          console.log('authorized');
+          res.dataset.map((x:User)=>{
             userList.push(new User(x.email,x.fullName,x.userName));
           });
         }

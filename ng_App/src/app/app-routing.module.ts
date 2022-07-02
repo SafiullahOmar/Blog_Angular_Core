@@ -3,11 +3,11 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { UsrMgtComponent } from './usr-mgt/usr-mgt.component';
-
+import{AuthGuard} from './Models/auth.guard';
 const routes: Routes = [
   {path:'login',component:LoginComponent},
   {path:'register',component:RegisterComponent},
-  {path:'mgt',component:UsrMgtComponent}
+  {path:'mgt',component:UsrMgtComponent,canActivate:[AuthGuard]}
 ];
 
 @NgModule({
