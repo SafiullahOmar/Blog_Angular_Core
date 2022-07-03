@@ -42,16 +42,25 @@ namespace CoreAPIs.Controllers
 
             try
             {
-                if (! await _roleInManger.RoleExistsAsync(model.Role)) {
-                    return await Task.FromResult(new ResponseVM(ResponseCode.Error, "Role does not Exist", null));
-                }
+                foreach (var role in model.Roles)
+                {
+                    if (!await _roleInManger.RoleExistsAsync(role))
+                    {
+                        return await Task.FromResult(new ResponseVM(ResponseCode.Error, "Role does not Exist", null));
+                    }
+                }               
 
                 var user = new AppUser() {  FullName = model.FullName,UserName=model.Email, Email = model.Email, DateCreated = DateTime.UtcNow, DateModified = DateTime.UtcNow };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
                     var tempUser = await _userManager.FindByEmailAsync(model.Email);
-                    await _userManager.AddToRoleAsync(tempUser, model.Role);
+
+                    foreach (var role in model.Roles)
+                    {
+                        await _userManager.AddToRoleAsync(tempUser, role);
+                    }
+                    
                     return await Task.FromResult(new ResponseVM(ResponseCode.OK, "User Has Been Created",null));
                 }
 
@@ -61,10 +70,6 @@ namespace CoreAPIs.Controllers
                 return await Task.FromResult(ex.Message);
             }
         }
-
-
- 
-
 
         [Authorize(AuthenticationSchemes =JwtBearerDefaults.AuthenticationScheme)]
         [HttpGet]
@@ -79,8 +84,8 @@ namespace CoreAPIs.Controllers
                 List<UserVM> allUsers = new List<UserVM>(); 
                 var users = _userManager.Users.ToList();
                 foreach (var user in users) {
-                    var role = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
-                    allUsers.Add(new UserVM(user.FullName, user.UserName, user.DateCreated, user.Email, role));
+                    var roles = (await _userManager.GetRolesAsync(user)).ToList();
+                    allUsers.Add(new UserVM(user.FullName, user.UserName, user.DateCreated, user.Email, roles));
                 }
                
                 return await Task.FromResult(new ResponseVM(ResponseCode.OK,"", users));
@@ -120,10 +125,10 @@ namespace CoreAPIs.Controllers
                 if (result.Succeeded)
                 {
                     var Appusr =await _userManager.FindByEmailAsync(model.Email);
-                    var role = "user";
-                   // var role = (await _userManager.GetRolesAsync(Appusr)).FirstOrDefault();
-                    var usr = new UserVM(Appusr.FullName, Appusr.UserName, Appusr.DateCreated, Appusr.Email,role);
-                    usr.Token = GenerateToken(Appusr,role);
+                   // var role = "user";
+                    var roles = (await _userManager.GetRolesAsync(Appusr)).ToList();
+                    var usr = new UserVM(Appusr.FullName, Appusr.UserName, Appusr.DateCreated, Appusr.Email,roles);
+                    usr.Token = GenerateToken(Appusr,roles);
                     return await Task.FromResult(new ResponseVM(ResponseCode.OK ,"",usr));
                 }
 
@@ -135,20 +140,24 @@ namespace CoreAPIs.Controllers
             }
         }
 
-        public string GenerateToken(AppUser user,string role) {
+        public string GenerateToken(AppUser user,List<string> roles) {
+            var claims = new List<Claim>() {
+             new Claim(JwtRegisteredClaimNames.NameId, user.Id),
+                    new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            };
+            foreach (var role in roles)
+            {
+                claims.Add(new System.Security.Claims.Claim(ClaimTypes.Role, role));
+            }
+            
             var jwtTokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_jwtConfig.key);
             var Auiendence =_jwtConfig.Auiedence;
             var Issuer = _jwtConfig.Issuer;
             var tokenDescriptor = new SecurityTokenDescriptor
             { 
-                Subject = new System.Security.Claims.ClaimsIdentity(new[] {
-                    new Claim(JwtRegisteredClaimNames.NameId, user.Id),
-                    new Claim(JwtRegisteredClaimNames.Email, user.Email),
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                    new Claim(ClaimTypes.Role, role)
-
-                }),
+                Subject = new System.Security.Claims.ClaimsIdentity(claims),
 
                 Expires = DateTime.UtcNow.AddHours(12),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),
