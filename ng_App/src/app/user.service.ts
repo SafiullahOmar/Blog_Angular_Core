@@ -19,18 +19,19 @@ export class UserService {
       Email:email,
       password:password
     }
+    console.log(body);
 
     return this.http.post<ResponseModel>(this.baseURL+"user/Login",body);
   }
 
-  public register(email:string,password:string,fullName:string,role:string){
+  public register(email:string,password:string,fullName:string,roles:string[]){
     const body={
       Email:email,
       password:password,
       FullName:fullName,
-      Role:role
+      Roles:roles
     }
-
+    console.log(body);
     return this.http.post<ResponseModel>(this.baseURL+"user/RegisterUser",body);
   }
 
@@ -42,7 +43,8 @@ export class UserService {
     const body={
       RoleName:roleName,
     }
-    return this.http.post<ResponseModel>(this.baseURL+"user/AddRole",body,{headers:header});
+    console.log(body);
+    return this.http.post<ResponseModel>(this.baseURL+"user/AddRole",body);
   }
 
   public getAlluser(){
@@ -57,9 +59,9 @@ export class UserService {
       if(res.responseCode==ResponseCode.OK){
        
         if(res.dataset){
-          console.log('authorized');
+          console.log(res.dataset);
           res.dataset.map((x:User)=>{
-            userList.push(new User(x.email,x.fullName,x.userName,x.role));
+            userList.push(new User(x.email,x.fullName,x.userName,x.roles));
           });
         }
 

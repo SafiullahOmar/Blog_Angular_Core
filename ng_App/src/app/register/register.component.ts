@@ -31,7 +31,7 @@ export class RegisterComponent implements OnInit {
     let password = this.registerForm.controls["password"].value;
 
 
-    this.ser.register(email, password, fullName,this.roles.filter(x=>x.isSelected)[0].role)
+    this.ser.register(email, password, fullName,this.roles.filter(x=>x.isSelected).map(x=>x.role))
       .subscribe((data) => {
         console.log(data);
         this.registerForm.controls["fullName"].setValue("");
@@ -53,12 +53,16 @@ export class RegisterComponent implements OnInit {
   onRoleChange(role:string){
 this.roles.forEach(x=>{
   if(x.role==role){
-    x.isSelected=true;
-  }else{
-    x.isSelected=false;
+    x.isSelected=!x.isSelected;
   }
 })
 
+  }
+
+
+  get isRoleSelected(){
+
+    return this.roles.filter(x=>x.isSelected).length>0;
   }
 
 }

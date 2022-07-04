@@ -35,7 +35,7 @@ namespace CoreAPIs
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<JWTConfig>(Configuration.GetSection("JWTConfig"));
-            services.AddControllers();
+            services.AddControllers().ConfigureApiBehaviorOptions(options=> { options.SuppressInferBindingSourcesForParameters = true; });
             services.AddDbContext<AppDBContext>(op => {
                 op.UseSqlServer(Configuration.GetConnectionString("Conn"));
             });

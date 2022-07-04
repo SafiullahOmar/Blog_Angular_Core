@@ -31,7 +31,7 @@
                             <div class="col-sm-6">
                                 <label for="inputPassword" class="col-sm-3 col-form-label">Roles :</label>
                                 <div class="form-check" *ngFor="let role of roles;let index=index">                                 
-                                    <input class="form-check-input" type="radio" name="radio" (change)="onRoleChange(role.role)"  [checked]="role.isSelected" id="{{index}}">
+                                    <input class="form-check-input" type="checkbox" name="radio" (change)="onRoleChange(role.role)"  [checked]="role.isSelected" id="{{index}}">
                                     <label class="form-check-label" for="{{index}}">
                                       {{role.role}}
                                     </label>
@@ -44,7 +44,7 @@
                     </div>
                 </div>
 
-                <button class="btn btn-primary" [disabled]="!registerForm.valid" type="submit">Submit</button>
+                <button class="btn btn-primary" [disabled]="!registerForm.valid || !isRoleSelected" type="submit">Submit</button>
             </form>
 
         </div>

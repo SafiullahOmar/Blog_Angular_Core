@@ -7,9 +7,9 @@ import{AuthGuard} from './Models/auth.guard';
 import { AddRoleComponent } from './add-role/add-role.component';
 const routes: Routes = [
   {path:'login',component:LoginComponent},
-  {path:'register',component:RegisterComponent},
+  {path:'register',component:RegisterComponent,canActivate:[AuthGuard]},
   {path:'mgt',component:UsrMgtComponent,canActivate:[AuthGuard]},
-  {path:'addrole',component:AddRoleComponent},
+  {path:'addrole',component:AddRoleComponent,canActivate:[AuthGuard]},
 
 ];
 

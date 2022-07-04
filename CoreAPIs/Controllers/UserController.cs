@@ -17,6 +17,7 @@ using System.Threading.Tasks;
 
 namespace CoreAPIs.Controllers
 {
+   
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
@@ -38,7 +39,7 @@ namespace CoreAPIs.Controllers
 
         [HttpPost]
         [Route("RegisterUser")]
-        public async Task<object> RegisterUser(UserRegistration model) {
+        public async Task<object> RegisterUser([FromBody] UserRegistration model) {
 
             try
             {
@@ -71,7 +72,8 @@ namespace CoreAPIs.Controllers
             }
         }
 
-        [Authorize(AuthenticationSchemes =JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize("admin")]
+        
         [HttpGet]
         
         [Route("GetAllUsers")]
@@ -88,7 +90,7 @@ namespace CoreAPIs.Controllers
                     allUsers.Add(new UserVM(user.FullName, user.UserName, user.DateCreated, user.Email, roles));
                 }
                
-                return await Task.FromResult(new ResponseVM(ResponseCode.OK,"", users));
+                return await Task.FromResult(new ResponseVM(ResponseCode.OK,"", allUsers));
 
             }
             catch (Exception ex)
@@ -97,6 +99,7 @@ namespace CoreAPIs.Controllers
             }
         }
        
+        
         [HttpGet]
         [Route("getRoles")]
         public async Task<object> getRoles()
@@ -113,10 +116,10 @@ namespace CoreAPIs.Controllers
                 return await Task.FromResult(new ResponseVM(ResponseCode.Error, ex.Message, ""));
             }
         }
-
+        [AllowAnonymous]
         [HttpPost]
         [Route("Login")]
-        public async Task<object> Login(LoginVM model)
+        public async Task<object> Login([FromBody] LoginVM model)
         {
 
             try
@@ -150,7 +153,7 @@ namespace CoreAPIs.Controllers
             {
                 claims.Add(new System.Security.Claims.Claim(ClaimTypes.Role, role));
             }
-            
+
             var jwtTokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_jwtConfig.key);
             var Auiendence =_jwtConfig.Auiedence;
@@ -161,7 +164,7 @@ namespace CoreAPIs.Controllers
 
                 Expires = DateTime.UtcNow.AddHours(12),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),
-                                                            SecurityAlgorithms.HmacSha256Signature),
+                SecurityAlgorithms.HmacSha256Signature),
                 Audience=Auiendence,
                 Issuer=Issuer
 
@@ -172,9 +175,9 @@ namespace CoreAPIs.Controllers
         }
 
         [HttpPost("AddRole")]
-        public async Task<object> AddRole(Role model) {
+        public async Task<object> AddRole([ FromBody] Role model) {
             try {
-                if (model.RoleName == "" || model == null) {
+                if (model.RoleName == "" || model.RoleName == null) {
                     return await Task.FromResult(new ResponseVM(ResponseCode.Error, "Paramters are missing", ""));
                 }
                 if (await _roleInManger.RoleExistsAsync(model.RoleName)) {

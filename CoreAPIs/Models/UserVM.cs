@@ -13,7 +13,7 @@ namespace CoreAPIs.Models
             UserName = userName;
             DateCreated = dateCreated;
             Email = email;
-            Roles = role;
+            Roles = roles;
         }
         public string FullName { get; set; }
         public string UserName { get; set; }
