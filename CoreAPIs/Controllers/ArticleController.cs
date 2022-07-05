@@ -50,7 +50,7 @@ namespace CoreAPIs.Controllers
         [Authorize(Roles = "admin,user")]
         [HttpPost]
         [Route("delete")]
-        public async Task<object> deleteArticle([FromBody]int id)
+        public async Task<object> DeleteArticle([FromBody]int id)
         {
 
             try
@@ -61,6 +61,32 @@ namespace CoreAPIs.Controllers
 
                 var result =await _articleService.DeleteArticle(id);
                 return await Task.FromResult(new ResponseVM(ResponseCode.OK, "Record Deleted", null));
+
+
+
+            }
+            catch (Exception ex)
+            {
+                return await Task.FromResult(ex.Message);
+            }
+        }
+
+
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("GetAllList")]
+        public async Task<object> GetArticleList([FromQuery] string authorId)
+        {
+
+            try
+            {
+                if (authorId.Length < 3)
+                {
+                    return await Task.FromResult(new ResponseVM(ResponseCode.Error, "Parameters are missin", null));
+                }
+
+                var result = await _articleService.GetArticles(authorId);
+                return await Task.FromResult(new ResponseVM(ResponseCode.OK, "", result));
 
 
 
