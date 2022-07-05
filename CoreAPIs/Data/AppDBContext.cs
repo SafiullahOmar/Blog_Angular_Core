@@ -14,5 +14,7 @@ namespace CoreAPIs.Data
         public AppDBContext(DbContextOptions options) : base(options)
         {
         }
+
+        public DbSet<Article> Articles { get; set; }
     }
 }

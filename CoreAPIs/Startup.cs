@@ -1,6 +1,8 @@
 using CoreAPIs.Data;
 using CoreAPIs.Data.Entities;
+using CoreAPIs.IService;
 using CoreAPIs.Models;
+using CoreAPIs.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -80,6 +82,8 @@ namespace CoreAPIs
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "CoreAPIs", Version = "v1" });
             });
+
+            services.AddScoped<IArticleService, ArticleService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

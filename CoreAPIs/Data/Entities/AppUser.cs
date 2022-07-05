@@ -11,5 +11,6 @@ namespace CoreAPIs.Data.Entities
         public string FullName { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime DateModified { get; set; }
+        public List<Article> Articles  { get; set; }
     }
 }

@@ -14,6 +14,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading.Tasks;
 
 namespace CoreAPIs.Controllers
 {
@@ -72,7 +73,7 @@ namespace CoreAPIs.Controllers
             }
         }
 
-        [Authorize("admin")]
+        [Authorize(Roles ="admin")]
         
         [HttpGet]
         

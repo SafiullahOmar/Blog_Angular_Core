@@ -11,6 +11,7 @@ import { UserService } from './user.service';
 import { UsrMgtComponent } from './usr-mgt/usr-mgt.component';
 import { HomeComponent } from './home/home.component';
 import { AddRoleComponent } from './add-role/add-role.component';
+import { BlockUIintegratedComponent } from './sharedModules/block-uiintegrated/block-uiintegrated.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { AddRoleComponent } from './add-role/add-role.component';
     RegisterComponent,
     UsrMgtComponent,
     HomeComponent,
-    AddRoleComponent
+    AddRoleComponent,
+    BlockUIintegratedComponent
   ],
   imports: [
     BrowserModule,
