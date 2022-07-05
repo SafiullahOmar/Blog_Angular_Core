@@ -12,6 +12,8 @@ import { UsrMgtComponent } from './usr-mgt/usr-mgt.component';
 import { HomeComponent } from './home/home.component';
 import { AddRoleComponent } from './add-role/add-role.component';
 import { BlockUIintegratedComponent } from './sharedModules/block-uiintegrated/block-uiintegrated.component';
+import { ArticleManagmentComponent } from './Article-Mgt/article-managment/article-managment.component';
+import { AddUpdateArticleComponent } from './Article-Mgt/add-update-article/add-update-article.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +23,9 @@ import { BlockUIintegratedComponent } from './sharedModules/block-uiintegrated/b
     UsrMgtComponent,
     HomeComponent,
     AddRoleComponent,
-    BlockUIintegratedComponent
+    BlockUIintegratedComponent,
+    ArticleManagmentComponent,
+    AddUpdateArticleComponent
   ],
   imports: [
     BrowserModule,
