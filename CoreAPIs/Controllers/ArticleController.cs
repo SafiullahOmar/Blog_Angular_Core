@@ -74,7 +74,7 @@ namespace CoreAPIs.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        [Route("GetAllList")]
+        [Route("GetArticleList")]
         public async Task<object> GetArticleList([FromQuery] string authorId)
         {
 

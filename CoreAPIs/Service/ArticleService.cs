@@ -38,6 +38,7 @@ namespace CoreAPIs.Service
             tempArticle.Title = title;
             tempArticle.Body = content;
             tempArticle.Publish = publishStatus;
+            tempArticle.Modified = DateTime.UtcNow;
             _context.Update(tempArticle);
             await _context.SaveChangesAsync();
             return tempArticle;
@@ -65,7 +66,8 @@ namespace CoreAPIs.Service
                     Publish = article.Publish,
                     AppUserId = article.AppUserId,
                     AuthorName = article.AppUser.FullName,
-                    Created = article.Created
+                    CreatedDate = article.Created,
+                    Id=article.Id
 
                 }
 

@@ -13,7 +13,8 @@ namespace CoreAPIs.Models
         public int Id { get; set; }
 
         public string AuthorName { get; set; }
-        public DateTime Created { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public DateTime ModifiedDate { get; set; }
         public string AppUserId { get; set; }
     }
 }
