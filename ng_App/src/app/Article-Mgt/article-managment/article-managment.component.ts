@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { UserService } from 'src/app/user.service';
+import { ArticleSerService } from '../article-ser.service';
 
 @Component({
   selector: 'app-article-managment',
@@ -8,9 +10,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ArticleManagmentComponent implements OnInit {
 
-  constructor() { }
+  public articles:any=[];
+  constructor(private ser:ArticleSerService) { }
 
   ngOnInit(): void {
+    this.getAllUsers();
+  }
+
+  getAllUsers(){
+
+    this.ser.getArticleByAuthorId().subscribe((data:any)=>{
+      this.users=data;
+      console.log(this.users);
+    });
   }
 
 }

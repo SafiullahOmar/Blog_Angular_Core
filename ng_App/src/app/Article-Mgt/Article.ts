@@ -13,7 +13,7 @@ export class Article {
     this.title=title;
     this.body=body;
     this.status=status;
-    this.createdDate=createdDate;
+    this.createdDate=createdDate;   
     this.modifiedDate=modifiedDate;
 
     }
