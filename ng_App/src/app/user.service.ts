@@ -61,7 +61,7 @@ export class UserService {
         if(res.dataset){
           console.log(res.dataset);
           res.dataset.map((x:User)=>{
-            userList.push(new User(x.email,x.fullName,x.userName,x.roles));
+            userList.push(new User(x.email,x.fullName,x.userName,x.roles,x.userId));
           });
         }
 

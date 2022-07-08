@@ -7,13 +7,14 @@ namespace CoreAPIs.Models
 {
     public class UserVM
     {
-        public UserVM( string fullName,string userName,DateTime dateCreated, string email,List<string> roles)
+        public UserVM( string fullName,string userName,DateTime dateCreated, string email,List<string> roles,string userId)
         {
             FullName = fullName;
             UserName = userName;
             DateCreated = dateCreated;
             Email = email;
             Roles = roles;
+            UserId = userId;
         }
         public string FullName { get; set; }
         public string UserName { get; set; }
@@ -21,6 +22,7 @@ namespace CoreAPIs.Models
         public string Email { get; set; }
         public string Token { get; set; }
         public List<string> Roles { get; set; }
+        public string UserId { get; set; }
 
     }
 }

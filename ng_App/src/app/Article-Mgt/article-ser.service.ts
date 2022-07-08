@@ -1,10 +1,10 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { constants } from 'buffer';
+import { map } from 'rxjs/operators';
 import { Constants } from '../Models/constants';
 import { ResponseCode } from '../Models/responseCode';
 import { ResponseModel } from '../Models/ResponseModel';
-import { User } from '../Models/user';
 import { Article } from './Article';
 
 @Injectable({
@@ -18,18 +18,18 @@ export class ArticleSerService {
 
     console.log(localStorage.getItem(Constants.USER_KEY));
     let userinfo=JSON.parse(localStorage.getItem(Constants.USER_KEY)!);
-    
+      
     const header=new HttpHeaders({
       'Authorization':`Bearer ${userinfo?.token}`
     });
-    return this.http.get<ResponseModel>(Constants.BASE_URL+"Article/GetArticleList",{headers:header}).pipe(map(res=>{
+    return this.http.get<ResponseModel>(Constants.BASE_URL+"Article/GetArticleList?authorId="+authorId,{headers:header}).pipe(map(res=>{
       let articleList=new Array<Article>();
       if(res.responseCode==ResponseCode.OK){
        
         if(res.dataset){
           console.log(res.dataset);
           res.dataset.map((x:any)=>{
-            articleList.push(new Article(x.iI,x.Title,x.Body,x.Publish,x.CreatedDate,x.ModifiedDate));
+            articleList.push(new Article(x.id,x.title,x.body,x.publish,x.createdDate,x.modifiedDate));
           });
         }
 

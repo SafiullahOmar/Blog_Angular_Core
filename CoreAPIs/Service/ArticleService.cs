@@ -40,7 +40,7 @@ namespace CoreAPIs.Service
             tempArticle.Publish = publishStatus;
             tempArticle.Modified = DateTime.UtcNow;
             _context.Update(tempArticle);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();     
             return tempArticle;
         }
 
