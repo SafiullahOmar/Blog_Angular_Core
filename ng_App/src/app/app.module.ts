@@ -13,6 +13,10 @@ import { HomeComponent } from './home/home.component';
 import { AddRoleComponent } from './add-role/add-role.component';
 import { BlockUIintegratedComponent } from './sharedModules/block-uiintegrated/block-uiintegrated.component';
 import { BlockUIModule } from 'ng-block-ui';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ModalModule, BsModalRef } from 'ngx-bootstrap/modal';
+import { ConfirmModalComponent } from './Article-Mgt/modals/confirm-modal/confirm-modal.component';
+
 
 @NgModule({
   declarations: [
@@ -30,12 +34,14 @@ import { BlockUIModule } from 'ng-block-ui';
     ReactiveFormsModule,
     FormsModule,
     HttpClientModule,
+    BrowserAnimationsModule,
     BlockUIModule.forRoot({
       template: BlockUIintegratedComponent
-    })
+    }),   
+    ModalModule.forRoot()
   ],
-  entryComponents:[BlockUIintegratedComponent],
-  providers: [UserService],
+  entryComponents:[BlockUIintegratedComponent,ConfirmModalComponent],
+  providers: [UserService,BsModalRef],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

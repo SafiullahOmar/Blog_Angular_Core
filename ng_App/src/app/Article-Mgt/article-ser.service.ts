@@ -14,6 +14,10 @@ export class ArticleSerService {
 
   constructor(private http:HttpClient) { }
 
+  public deleteArticle(articleId:number){
+     
+  }
+
   public getArticleByAuthorId(authorId:string){
 
     console.log(localStorage.getItem(Constants.USER_KEY));
