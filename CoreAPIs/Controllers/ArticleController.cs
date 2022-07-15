@@ -49,10 +49,9 @@ namespace CoreAPIs.Controllers
 
         [Authorize(Roles = "admin,user")]
         [HttpPost]
-        [Route("delete")]
+        [Route("DeleteArticle")]
         public async Task<object> DeleteArticle([FromBody]DeleteArticle model)
         {
-
             try
             {
                 if (model.Id < 1) {
@@ -61,7 +60,6 @@ namespace CoreAPIs.Controllers
 
                 var result =await _articleService.DeleteArticle(model.Id);
                 return await Task.FromResult(new ResponseVM(ResponseCode.OK, "Record Deleted", null));
-
             }
             catch (Exception ex)
             {
@@ -75,7 +73,6 @@ namespace CoreAPIs.Controllers
         [Route("GetArticleList")]
         public async Task<object> GetArticleList([FromQuery] string authorId)
         {
-
             try
             {
                 if (authorId.Length < 3)
@@ -85,9 +82,6 @@ namespace CoreAPIs.Controllers
 
                 var result = await _articleService.GetArticles(authorId);
                 return await Task.FromResult(new ResponseVM(ResponseCode.OK, "", result));
-
-
-
             }
             catch (Exception ex)
             {
@@ -95,7 +89,4 @@ namespace CoreAPIs.Controllers
             }
         }
     }
-  
-
-
 }

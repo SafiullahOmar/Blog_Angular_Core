@@ -1,7 +1,6 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -16,6 +15,10 @@ import { BlockUIModule } from 'ng-block-ui';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ModalModule, BsModalRef } from 'ngx-bootstrap/modal';
 import { ConfirmModalComponent } from './Article-Mgt/modals/confirm-modal/confirm-modal.component';
+import {ToastrModule} from 'ngx-toastr'
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import { MyCkEditorComponent } from './sharedModules/ck-editor-module/my-ck-editor/my-ck-editor.component';
+import { MymoduleModule } from './sharedModules/ck-editor-module/mymodule/mymodule.module';
 
 
 @NgModule({
@@ -34,13 +37,16 @@ import { ConfirmModalComponent } from './Article-Mgt/modals/confirm-modal/confir
     ReactiveFormsModule,
     FormsModule,
     HttpClientModule,
-    BrowserAnimationsModule,
+    BrowserAnimationsModule,  
     BlockUIModule.forRoot({
       template: BlockUIintegratedComponent
     }),   
-    ModalModule.forRoot()
+    ModalModule.forRoot(),
+    ToastrModule.forRoot(),
+    MymoduleModule
   ],
   entryComponents:[BlockUIintegratedComponent,ConfirmModalComponent],
+  schemas:[CUSTOM_ELEMENTS_SCHEMA],
   providers: [UserService,BsModalRef],
   bootstrap: [AppComponent]
 })

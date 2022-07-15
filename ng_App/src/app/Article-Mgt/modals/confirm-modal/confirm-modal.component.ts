@@ -1,5 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { BsModalRef, ModalOptions } from 'ngx-bootstrap/modal';
+import { BsModalRef } from 'ngx-bootstrap/modal';
+
+
 import { Subject } from 'rxjs';
 
 @Component({

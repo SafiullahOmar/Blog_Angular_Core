@@ -1,1 +1,26 @@
-<p>add-update-article works!</p>
+<div class="modal-header">
+  <h4 class="modal-title pull-left">{{title}}</h4>
+  <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="decline()">
+    <span aria-hidden="true" class="visually-hidden">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form>
+    <div class="row">
+      <label>Title</label>
+      <div class="col-md-10">
+        <input type="text" name="title" id="title" class="form-control">
+      </div>
+    </div>
+    <div class="row">
+      <label>Body</label>
+      <div class="col-md-10">
+      
+      </div>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-default" (click)="decline()">Close</button>
+  <button type="button" class="btn btn-default" (click)="confirm()">{{confirmButtonTitle}}</button>
+</div>

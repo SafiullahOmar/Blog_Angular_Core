@@ -12,32 +12,40 @@ import { Article } from './Article';
 })
 export class ArticleSerService {
 
-  constructor(private http:HttpClient) { }
+  constructor(private http: HttpClient) { }
 
-  public deleteArticle(articleId:number){
-     
+  public deleteArticle(articleId: number) {
+    let userinfo = JSON.parse(localStorage.getItem(Constants.USER_KEY)!);
+    const header = new HttpHeaders({
+      'Authorization': `Bearer ${userinfo?.token}`
+    });
+    const body = {
+      Id: articleId
+    }
+
+    return this.http.post<ResponseModel>(Constants.BASE_URL + "Article/DeleteArticle", body, { headers: header });
   }
 
-  public getArticleByAuthorId(authorId:string){
+  public getArticleByAuthorId(authorId: string) {
 
     console.log(localStorage.getItem(Constants.USER_KEY));
-    let userinfo=JSON.parse(localStorage.getItem(Constants.USER_KEY)!);
-      
-    const header=new HttpHeaders({
-      'Authorization':`Bearer ${userinfo?.token}`
+    let userinfo = JSON.parse(localStorage.getItem(Constants.USER_KEY)!);
+
+    const header = new HttpHeaders({
+      'Authorization': `Bearer ${userinfo?.token}`
     });
-    return this.http.get<ResponseModel>(Constants.BASE_URL+"Article/GetArticleList?authorId="+authorId,{headers:header}).pipe(map(res=>{
-      let articleList=new Array<Article>();
-      if(res.responseCode==ResponseCode.OK){
-       
-        if(res.dataset){
+    return this.http.get<ResponseModel>(Constants.BASE_URL + "Article/GetArticleList?authorId=" + authorId, { headers: header }).pipe(map(res => {
+      let articleList = new Array<Article>();
+      if (res.responseCode == ResponseCode.OK) {
+
+        if (res.dataset) {
           console.log(res.dataset);
-          res.dataset.map((x:any)=>{
-            articleList.push(new Article(x.id,x.title,x.body,x.publish,x.createdDate,x.modifiedDate));
+          res.dataset.map((x: any) => {
+            articleList.push(new Article(x.id, x.title, x.body, x.publish, x.createdDate, x.modifiedDate));
           });
         }
 
-       
+
       }
       return articleList;
     }));
